@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BSNL FTTH Lat/Long</title>
+<style>
+body{font-family:Arial;background:#f2f6fa;padding:20px}
+.card{max-width:450px;margin:30px auto;background:white;padding:25px;border-radius:18px;box-shadow:0 3px 15px #bbb}
+.logo{text-align:center;background:#0056a6;color:white;padding:12px;border-radius:10px;font-size:24px;font-weight:bold}
+h2{text-align:center}
+input{width:100%;padding:14px;font-size:17px;box-sizing:border-box;border:1px solid #bbb;border-radius:10px}
+button{width:100%;padding:14px;margin-top:12px;border:0;border-radius:10px;font-size:16px;font-weight:bold}
+.open{background:#0056a6;color:white}
+.copy{background:#e5edf5}
+.clear{background:#eee}
+#link{margin-top:15px;word-break:break-all;font-size:12px}
+</style>
+</head>
+
+<body>
+<div class="card">
+
+<div class="logo">BSNL</div>
+
+<h2>FTTH Lat / Long</h2>
+
+<p><b>BB User ID</b></p>
+
+<input id="userid" placeholder="Enter customer BB User ID">
+
+<button class="open" onclick="openLink()">OPEN LAT / LONG</button>
+<button class="copy" onclick="copyLink()">COPY LINK</button>
+<button class="clear" onclick="clearAll()">CLEAR</button>
+
+<div id="link"></div>
+
+</div>
+
+<script>
+function encodeBase64(text){
+let bytes=new TextEncoder().encode(text);
+let binary="";
+for(let i=0;i<bytes.length;i++){
+binary+=String.fromCharCode(bytes[i]);
+}
+return btoa(binary);
+}
+
+function getLink(){
+let id=document.getElementById("userid").value.trim();
+
+if(!id)return "";
+
+let encoded=encodeBase64(id);
+
+return "https://foa.cdr.bsnl.co.in/wfm/accountDetailsConfirmation/index.html?BB_USER_ID="
++encoded+"&REDIRECT=M";
+}
+
+function openLink(){
+let link=getLink();
+
+if(!link){
+alert("Please enter BB User ID");
+return;
+}
+
+document.getElementById("link").innerText=link;
+
+window.location.href=link;
+}
+
+function copyLink(){
+let link=getLink();
+
+if(!link){
+alert("Please enter BB User ID");
+return;
+}
+
+navigator.clipboard.writeText(link);
+document.getElementById("link").innerText="Link copied successfully!";
+}
+
+function clearAll(){
+document.getElementById("userid").value="";
+document.getElementById("link").innerText="";
+}
+</script>
+
+</body>
+</html>
